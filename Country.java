@@ -66,7 +66,7 @@ public class Country {
      * @return change in years
      */
     public double getChange2010To2020() {
-        
+        return lifeExpectancy2020-lifeExpectancy2010;
     }
 
     /**
@@ -74,7 +74,7 @@ public class Country {
      * @return average life expectancy
      */
     public double getAverageLifeExpectancy() {
-        
+        return (lifeExpectancy2010+lifeExpectancy2015+lifeExpectancy2020)/3;
     }
 
     /**
@@ -82,7 +82,7 @@ public class Country {
      * @return true if high income, false otherwise
      */
     public boolean isHighIncome() {
-        
+        return incomeGroup.equals("high");
     }
 
     /**
@@ -91,7 +91,7 @@ public class Country {
      */
 
     public String toString() {
-       
+       return name + " (" + region + ") - 2020 Life Expectancy: " + lifeExpectancy2020 + " years";
     }
 
 

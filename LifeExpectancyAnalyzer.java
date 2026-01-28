@@ -26,14 +26,32 @@ public class LifeExpectancyAnalyzer {
      * @throws IOFoundException if the file is not found
      */
     public void readFromFile(String filename) throws IOException {
-
+        Scanner s = new Scanner(new File(filename));
+        // try {
+        //     Scanner s = new Scanner (new File(filename));
+        // }catch (Exception e) {
+        //     System.out.println("blown up");
+        // } 
+        s.nextLine();
+        while (s.hasNextLine()) {
+            String line = s.nextLine();
+            String[] items = line.split(",");
+            //System.out.println(items[2]);
+            Country temp = new Country(items[0], items[1], Integer.parseInt(items[2]), items[3], 
+                        Double.parseDouble(items[4]), Double.parseDouble(items[5]), Double.parseDouble(items[6]));
+            countries.add(temp);
+        }
+        System.out.println(countries.size());
+        s.close();
     }
 
     /**
      * Display all countries in the list
      */
     public void displayAllCountries() {
-  
+        for (Country c: countries) {
+            System.out.println(c);
+        }
     }
 
     /**
@@ -41,7 +59,9 @@ public class LifeExpectancyAnalyzer {
      * @param region the region to filter by
      */
     public void displayByRegion(String region) {
- 
+        for (Country c: countries) {
+            if (c.getRegion().equals(region)) System.out.println(c);
+        }
     }
 
     /**
@@ -49,7 +69,12 @@ public class LifeExpectancyAnalyzer {
      * @return the Country with the highest life expectancy, or null if list is empty
      */
     public Country findHighestLifeExpectancy() {
-       
+        int max = 0;
+        Country hle = new Country(null, null, 0, null, 0, 0, 0);
+        for (Country c: countries) {
+            if (c.getLifeExpectancy2020() >= max) hle = c;
+        }
+        return hle;
     }
 
     /**
@@ -57,7 +82,12 @@ public class LifeExpectancyAnalyzer {
      * @return the Country with the lowest life expectancy, or null if list is empty
      */
     public Country findLowestLifeExpectancy() {
-
+        int min = 0;
+        Country lle = new Country(null, null, 0, null, 0, 0, 0);
+        for (Country c: countries) {
+            if (c.getLifeExpectancy2020() <= min) lle = c;
+        }
+        return lle;
     }
 
     /**
@@ -65,7 +95,12 @@ public class LifeExpectancyAnalyzer {
      * @return average life expectancy in 2020, or 0 if list is empty
      */
     public double calculateAverageLifeExpectancy() {
-        
+        if (countries.size() == 0) return 0;
+        int t = 0;
+        for (Country c: countries) {
+            t += c.getLifeExpectancy2020();
+        }
+        return t/countries.size();
     }
 
     /**
@@ -74,7 +109,11 @@ public class LifeExpectancyAnalyzer {
      * @return number of countries in that income group
      */
     public int countByIncomeGroup(String incomeGroup) {
-        
+        int count = 0;
+        for (Country c: countries) {
+            if (c.getIncomeGroup().equals(incomeGroup)) count++;
+        }
+        return count;
     }
 
     /**
@@ -82,14 +121,21 @@ public class LifeExpectancyAnalyzer {
      * @return the Country with the largest improvement, or null if list is empty
      */
     public Country findMostImprovement() {
-        
+        double maxImprovement = 0;
+        Country improvedCountry = new Country(null, null, 0, null, 0, 0, 0);
+        for (Country c: countries) {
+            if (c.getChange2010To2020() > maxImprovement) maxImprovement = c.getChange2010To2020();
+        }
+        return improvedCountry;
     }
 
     /**
      * Display summary statistics
      */
     public void displayStatistics() {
-        
+        for (Country c: countries) {
+            System.out.println(c + " - Income Level: " + c.getIncomeGroup());
+        }
     }
 
 }
